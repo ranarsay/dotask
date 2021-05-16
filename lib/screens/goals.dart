@@ -41,8 +41,8 @@ class _GoalsScreenState extends State<GoalsScreen>
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,9 +131,10 @@ class _GoalsScreenState extends State<GoalsScreen>
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 130,
+            title: Text("Goals", style: TextStyle(color: Color.fromRGBO(23, 106, 198, 1))),
             backgroundColor: Colors.white,
             leading: IconButton(
-            icon: Icon(Icons.menu),color: Colors.cyan ,
+            icon: Icon(Icons.menu),color: Color.fromRGBO(23, 106, 198, 1), 
             onPressed: (){
               final _state = stateMenu.currentState;
               _state.openSideMenu();

@@ -39,8 +39,8 @@ class _ListStuffState extends State<ListScreen>
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,10 +128,11 @@ class _ListStuffState extends State<ListScreen>
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            title: Text("Lists", style: TextStyle(color:Color.fromRGBO(23, 106, 198, 1))),
             toolbarHeight: 130,
             backgroundColor: Colors.white,
         leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.cyan ,
+            icon: Icon(Icons.menu), color: Color.fromRGBO(23, 106, 198, 1) ,
             onPressed: (){
               final _state = stateMenu.currentState;
               _state.openSideMenu();

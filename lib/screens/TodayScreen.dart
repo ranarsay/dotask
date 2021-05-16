@@ -40,13 +40,13 @@ class TodayScreen extends StatefulWidget {
 
 class _TodayScreenState extends State<TodayScreen> {
   String userID = "";
-  bool check = false;
 
   String _currentQuotes;
 
   void initState() {
     super.initState();
     fetchUserInfo();
+    _shuffleQuotes();
   }
 
   void _shuffleQuotes() {
@@ -67,10 +67,12 @@ class _TodayScreenState extends State<TodayScreen> {
 
   Widget build(BuildContext context) {
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
+    final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
+
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,9 +82,7 @@ class _TodayScreenState extends State<TodayScreen> {
               top: 20,
               bottom: 20,
             ),
-            child: Column(
-              
-              ),
+            
               ),
               BuiltTileWidget(
                 title: "Profile",
@@ -163,26 +163,38 @@ class _TodayScreenState extends State<TodayScreen> {
 
     child: Scaffold(
         appBar: AppBar(
+          title: Text("Today", style: TextStyle(color:Color.fromRGBO(23, 106, 198, 1))),
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.blue ,
+            icon: Icon(Icons.menu), color: Color.fromRGBO(23, 106, 198, 1),
             onPressed: (){
               final _state = stateMenu.currentState;
-              _state.openSideMenu();
+              if (_state.isOpened)
+                  _state.closeSideMenu(); 
+                else
+                  _state.openSideMenu();
             },
             ),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    final _state = _endSideMenuKey.currentState;
+                    if (_state.isOpened)
+                      _state.closeSideMenu();
+                    else
+                      _state.openSideMenu();
+                  })
+            ],
 
         ),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection("profileInfo").doc(userID).snapshots(),
               
-          builder: (context, snapshot) {
-            if(!snapshot.hasData) 
-          return Align(
-                alignment: FractionalOffset.center,
-                child: CircularProgressIndicator(),
-              );
+          builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+            if(snapshot.hasData) {
             return Stack(
+              
               children: [
                 Positioned(
                     top: 10,
@@ -191,7 +203,7 @@ class _TodayScreenState extends State<TodayScreen> {
                     child: Container(
                         height: 300,
                         decoration: BoxDecoration(
-                            color: Color.fromRGBO(91, 194, 240, 1),
+                            color: Color.fromRGBO(23, 106, 198, 1),
                             borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +231,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                       )
                                     ])),
                             SizedBox(
-                              height: 5,
+                              height: 9,
                             ),
                             Text(
                               "  Have a nice day!",
@@ -259,9 +271,11 @@ class _TodayScreenState extends State<TodayScreen> {
                                 borderRadius: BorderRadius.circular(15),
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.greenAccent[100],
-                                    Color.fromRGBO(91, 194, 240, 0.8)
+                                   Colors.greenAccent[100],
+                                    Color.fromRGBO(23, 106, 198, 1)
                                   ],
+                                  begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter
                                 ),
                               ),
                               child: ListView(
@@ -269,55 +283,33 @@ class _TodayScreenState extends State<TodayScreen> {
                                 primary: false,
                                 children: <Widget>[
                                   SizedBox(
-                                    height: 50,
+                                    height: 70,
                                   ),
                                   if (_currentQuotes == null)
                                     Text("If you can dream it, you can do it.",
                                         style: TextStyle(
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.italic)),
+                                            fontSize: 17,
+                                            color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,),
                                   if (_currentQuotes != null)
                                     Text(
                                       '$_currentQuotes',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 17,
-                                        fontStyle: FontStyle.italic,
-                                      ),
-                                    ),
-                                  SizedBox(
-                                    height: 35,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(.1),
-                                              spreadRadius: 1,
-                                              blurRadius: 2,
-                                              offset: Offset(0, 1),
-                                            )
-                                          ]),
-                                      child: IconButton(
-                                        icon: new Icon(Icons.arrow_forward),
                                         color: Colors.white,
-                                        onPressed: () {
-                                          _shuffleQuotes();
-                                        },
                                       ),
+                                      
                                     ),
-                                  ),
+                                  
                                 ],
                               ),
                             ),
                             SizedBox(height: 65),
-                            Text("Tasks",
+                            Text("See your tasks",
                                 style: TextStyle(
-                                  color: Color.fromRGBO(91, 194, 240, 0.9),
+                                  color: Color.fromRGBO(23, 106, 198, 1),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                 ))
@@ -326,6 +318,13 @@ class _TodayScreenState extends State<TodayScreen> {
                 buildBottomHalfContainer(false),
               ],
             );
+            } else {
+              return Align(
+                alignment: FractionalOffset.center,
+                child: CircularProgressIndicator(),
+              );
+
+            }
           },
         )
         )
@@ -359,7 +358,7 @@ class _TodayScreenState extends State<TodayScreen> {
                         gradient: LinearGradient(
                             colors: [
                               Colors.greenAccent[100],
-                              Color.fromRGBO(91, 194, 240, 0.8)
+                              Color.fromRGBO(23, 106, 198, 1)
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight),

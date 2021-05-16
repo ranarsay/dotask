@@ -1,7 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../models/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 import 'homepage.dart';
@@ -22,9 +21,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
 
-  TextEditingController _nameController =TextEditingController();
-  TextEditingController _surnameController =TextEditingController();
-  TextEditingController _emailController =TextEditingController();
+ 
 
   List userProfilesList = [];
   String userID ="";
@@ -33,7 +30,6 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     fetchUserInfo();
-    fetchDatabaseList();
   }
 
   fetchUserInfo() async {
@@ -41,37 +37,15 @@ class _UserProfileState extends State<UserProfile> {
     userID=getUser.uid;
   }
 
-  fetchDatabaseList() async {
-    dynamic resultant = await Database().getUsersList();
-
-    if(resultant == null) {
-      print("unable to retrieve");
-    }
-    else {
-      setState(() {
-        userProfilesList = resultant;
-      });
-    }
-  }
-
-
-
-  updateData(String name, String surname, String email, String userID) async {
-    await Database().updateUserList(name, surname, email, userID);
-    fetchDatabaseList();
-  }
-
   
-
-
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,10 +55,7 @@ class _UserProfileState extends State<UserProfile> {
               top: 20,
               bottom: 20,
             ),
-            child: Column(
-              children: [
-              ],
-              ),
+            
               ),
             
               BuiltTileWidget(
@@ -157,26 +128,19 @@ class _UserProfileState extends State<UserProfile> {
 
     child: Scaffold(
       appBar: AppBar(
-      title: Text("Profile", style: TextStyle(color:Colors.black)),
+      title: Text("Profile", style: TextStyle(color:Color.fromRGBO(23, 106, 198, 1))),
       backgroundColor: Colors.white,
         leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.blue ,
+            icon: Icon(Icons.menu), color:Color.fromRGBO(23, 106, 198, 1) ,
             onPressed: (){
               final _state = stateMenu.currentState;
-              _state.openSideMenu();
+              if (_state.isOpened)
+                  _state.closeSideMenu(); 
+                else
+                  _state.openSideMenu();
             },
             ),
-      actions: [
-        
-        RaisedButton(onPressed: (){
-          openDialogueBox(context);
-        },
-        color: Colors.white,
-        child: Icon(Icons.edit,
-        color: Colors.black,),
-        ),
-        
-      ],
+    
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("profileInfo").doc(userID).snapshots(),
@@ -207,7 +171,7 @@ class _UserProfileState extends State<UserProfile> {
                   leading: Icon(Icons.account_circle),
                   title: Text(snapshot.data["name"] + " " +snapshot.data["surname"], style: TextStyle(fontSize: 25, )),),
                   ListTile(
-                    title: Text(snapshot.data["email"].toString()),
+                    title: Text(snapshot.data["email"]),
                     leading: Icon(Icons.mail),
                   ),
 
@@ -225,64 +189,15 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  openDialogueBox(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Edit profile"),
-          content: Container(
-            height: 150,
-            child: Column(
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(hintText: "Name"),
-                ),
-                TextField(
-                  controller: _surnameController,
-                  decoration: InputDecoration(hintText: "Surname"),
-                ),
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(hintText: "Email"),
-                ),
-                
-              ],
-              ),
-          ),
-
-          actions: [
-            FlatButton(
-              onPressed: () {
-                submitAction(context);
-                Navigator.pop(context);
-              },
-              child: Text("Submit"),
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("Cancel"),
-              )
-          ],
-        );
+  
 
           
       }
-      );
-  }
+      
+  
 
-  submitAction(BuildContext context) {
-    updateData(_nameController.text, _surnameController.text, _emailController.text, userID);
-    _nameController.clear();
-    _surnameController.clear();
-    _emailController.clear();
+  
 
-
-  }
-}
 class BuiltTileWidget extends StatelessWidget {
 
   final String title;

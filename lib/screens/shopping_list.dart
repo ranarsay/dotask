@@ -75,8 +75,8 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,10 +161,10 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
       ),
     child: Scaffold(
       appBar: AppBar(
-        title: Text("Shopping List",style: TextStyle(color: Colors.black),),
+        title: Text("Shopping List",style: TextStyle(color: Color.fromRGBO(23, 106, 198, 1)),),
         backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.blue ,
+            icon: Icon(Icons.menu), color: Color.fromRGBO(23, 106, 198, 1) ,
             onPressed: (){
               final _state = stateMenu.currentState;
               _state.openSideMenu();
@@ -182,7 +182,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
         ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.cyan,
+        backgroundColor: Color.fromRGBO(23, 106, 198, 1),
         onPressed: () {
           showDialog(
               context: context,
@@ -223,24 +223,18 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
 
   }
    
-
-  
-
-  DocumentSnapshot snapshot;
-
-  void getData() async {
-    final data= await FirebaseFirestore.instance.collection("profileInfo").doc(userID).get();
-    snapshot= data;
-  }
-
-
   Widget _body(){
     return Container(
       child: Expanded(
         child:  StreamBuilder(
           stream: FirebaseFirestore.instance.collection("profileInfo").doc(userID).collection("shopping_list").snapshots(),
           builder: (context, snapshots) {
-            if (snapshots.hasData) {
+            if (snapshots.hasError) { 
+              return Text("Something went wrong");
+              } else if(snapshots.data == null) return Align(
+                alignment: FractionalOffset.center,
+                child: CircularProgressIndicator(),
+              );
               return ListView.builder(
                   shrinkWrap: true,
                   itemCount: snapshots.data.docs.length,
@@ -282,7 +276,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                                 
                                   
                               },
-                              icon: Icon(documentSnapshot.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank, color: Colors.cyan,
+                              icon: Icon(documentSnapshot.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank, color: Color.fromRGBO(23, 106, 198, 1),
                               ),
                               ),
                                
@@ -305,14 +299,9 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     );
                   }
                   );
-            } else {
-              return Align(
-                alignment: FractionalOffset.center,
-                child: CircularProgressIndicator(),
-              );
-            }
+            } 
           
-          }
+          
     ),
 
           ),

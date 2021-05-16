@@ -55,7 +55,7 @@ class _ListBooksStuffState extends State<BooksScreen> {
   Widget build(BuildContext context){
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: Color.fromRGBO(23, 106, 198, 1),
         onPressed: () {
           showDialog(
             context: context,
@@ -78,13 +78,14 @@ class _ListBooksStuffState extends State<BooksScreen> {
                       Navigator.of(context).pop();
                     },
                     child: Text("Add"),
+                    color: Colors.black,
                   ),
                 ],
               );
             },
           );
         }, //onPressed
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("profileInfo").doc(userID).collection("book_lists").snapshots(),

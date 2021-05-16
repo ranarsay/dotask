@@ -9,42 +9,26 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
 
         return Scaffold(
-          body: Stack (
-          children: <Widget> [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
+          body: Container (
+              height: _height,
+              width: _width,
               decoration: BoxDecoration(
                 color: Colors.white,
               ),
-                         
-            ),
-            
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView (
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Container(
-                      height: 40.0,
-                      margin: const EdgeInsets.only(top: 100) ),
-
-                      Image.asset("assets/dotask_logo.png", height: 100),
-
-                      SizedBox(height: 50.0),
-                      Container(
-                
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20
-                ),
-
+              child:SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: _height * 0.3),
+                  Image.asset("assets/dotask_logo.png", height: 100),
+                  SizedBox(height: _height * 0.025),
+              
+              Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Text("Hi there! Nice to see you.", 
                 textAlign: TextAlign.center,
                 
@@ -53,16 +37,16 @@ class Body extends StatelessWidget {
                   fontSize: 20,
                   
                   ),
+                  
                 ),
+              
                 
               ),
-               SizedBox(height:70),
+              SizedBox(height: _height * 0.035),
 
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-
-                  RaisedButton(
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: RaisedButton(
                   child: Text("SIGN IN"),
                   shape: RoundedRectangleBorder(
                     borderRadius:BorderRadius.circular(15.0),
@@ -76,10 +60,13 @@ class Body extends StatelessWidget {
                   textColor: Colors.black
                   
                 ),
-                SizedBox(height:30),
-                RaisedButton(
+                
+                ),
+                SizedBox(height: _height * 0.010),
+                Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: RaisedButton(
                   child: Text("SIGN UP"),
-                  padding: EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
                     borderRadius:BorderRadius.circular(15.0),
                     side: BorderSide(color: Colors.blue),
@@ -91,21 +78,24 @@ class Body extends StatelessWidget {
                   color: Colors.blue,
                   textColor: Colors.black
                   
-                )
+                ),
+                
+                ),
+              
 
-              
-              
-                        ],
+                ],),
+              ),
+  
+             
+                        
                       )
 
-                  ], 
-                  ),
-                ),
-              ),
-
-            ]
-          ),
+                  
+                
           
+
+            
+         
      
     );
   }

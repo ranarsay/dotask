@@ -26,7 +26,6 @@ class TodoScreen extends StatefulWidget{
 
 class _TodoScreenState extends State<TodoScreen> {
 
-
   String title ;
   String userID = "";
   bool check= false;
@@ -38,15 +37,15 @@ class _TodoScreenState extends State<TodoScreen> {
     fetchUserInfo();
 
   }
-
-
+ 
+  
 
   fetchUserInfo() async {
     User getUser =  FirebaseAuth.instance.currentUser;
     userID = getUser.uid;
   }
 
-  create() {
+  Future<void>  create() async{
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection("profileInfo").doc(userID).collection("user_todo").doc(title);
 
@@ -55,17 +54,17 @@ class _TodoScreenState extends State<TodoScreen> {
       "check": false,
       
       };
-     documentReference.set(list).whenComplete(() {
+     await documentReference.set(list).whenComplete(() {
        return null;
      });
   }
   
 
-  delete(item) {
+  Future<void>  delete(item) async {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection("profileInfo").doc(userID).collection("user_todo").doc(item);
 
-    documentReference.delete().whenComplete(() {
+    await documentReference.delete().whenComplete(() {
       return null;
     });
   }
@@ -75,8 +74,8 @@ class _TodoScreenState extends State<TodoScreen> {
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,6 +91,7 @@ class _TodoScreenState extends State<TodoScreen> {
               ],
               ),
               ),
+              
               BuiltTileWidget(
                 title: "Profile",
                 iconData: Icons.person,
@@ -160,18 +160,19 @@ class _TodoScreenState extends State<TodoScreen> {
           ),
       ),
     child: Scaffold(
+      
       appBar: AppBar(
-        title: Text("To do List",style: TextStyle(color: Colors.black),),
+        title: Text("To do List", style: TextStyle(color:Color.fromRGBO(23, 106, 198, 1))),
         backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.blue ,
+            icon: Icon(Icons.menu), color:Color.fromRGBO(23, 106, 198, 1) ,
             onPressed: (){
               final _state = stateMenu.currentState;
               _state.openSideMenu();
             },
             ),
+            
       ),
-      
       body: Container(
         child: Column(
           children: <Widget>[
@@ -182,7 +183,7 @@ class _TodoScreenState extends State<TodoScreen> {
         ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.cyan,
+        backgroundColor: Color.fromRGBO(23, 106, 198, 1),
         onPressed: () {
           showDialog(
               context: context,
@@ -224,32 +225,25 @@ class _TodoScreenState extends State<TodoScreen> {
   }
    
 
-  
-
-  DocumentSnapshot snapshot;
-
-  void getData() async {
-    final data= await FirebaseFirestore.instance.collection("profileInfo").doc(userID).get();
-    snapshot= data;
-  }
-
-
   Widget _body(){
     return Container(
       child: Expanded(
         child:  StreamBuilder(
           stream: FirebaseFirestore.instance.collection("profileInfo").doc(userID).collection("user_todo").snapshots(),
-          builder: (context, snapshots) {
-            if (snapshots.hasData) {
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }else if(snapshot.connectionState == ConnectionState.waiting) {return Align(
+                alignment: FractionalOffset.center,
+                child: CircularProgressIndicator(),
+              ); }
+              else 
+               
               return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshots.data.docs.length,
-                  scrollDirection: Axis.vertical,
-                  
+                  itemCount: snapshot.data.docs.length,                  
                   itemBuilder: (context, index) {
-
-                    DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
-                    
+                    DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
                     return Dismissible(
                         onDismissed: (direction) {
                           delete(documentSnapshot.data()["title"]);
@@ -282,13 +276,10 @@ class _TodoScreenState extends State<TodoScreen> {
                                 
                                   
                               },
-                              icon: Icon(documentSnapshot.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank, color: Colors.cyan,
+                              icon: Icon(documentSnapshot.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank, color: Color.fromRGBO(23, 106, 198, 1),
                               ),
                               ),
                                
-                        
-
-                                   
                             trailing: IconButton(                              
                                 icon: Icon(
                                   Icons.delete,
@@ -305,14 +296,11 @@ class _TodoScreenState extends State<TodoScreen> {
                     );
                   }
                   );
-            } else {
-              return Align(
-                alignment: FractionalOffset.center,
-                child: CircularProgressIndicator(),
-              );
-            }
+              }
           
-          }
+             
+          
+          
     ),
 
           ),

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:do_task/widgets/provider_widget.dart';
 import 'TodayScreen.dart';
 
+
 // TODO move this to tone location
 
 enum AuthFormType { signIn, signUp }
@@ -196,8 +197,7 @@ class _SignUpViewState extends State<SignUpView> {
       textFields.add(SizedBox(height: 20));
       textFields.add(
         TextFormField(
-          
-          validator: NameValidator.validate,
+          validator: SurnameValidator.validate,
           style: TextStyle(fontSize: 18.0),
           decoration: InputDecoration(
           border: new OutlineInputBorder(

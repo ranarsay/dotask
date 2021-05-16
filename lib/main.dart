@@ -10,9 +10,7 @@ import 'screens/list_screen.dart';
 import 'screens/movies_screen.dart';
 import 'screens/others_screen.dart';
 import 'screens/motivation.dart';
-import 'screens/video_screen.dart';
-import 'screens/mot_screen.dart';
-import 'screens/yoga_screen.dart';
+
 import 'screens/goals.dart';
 import 'screens/body.dart';
 import 'screens/shopping_list.dart';
@@ -51,9 +49,6 @@ void main() async {
       OthersScreen.route: (ctx) => OthersScreen(),
       GoalsScreen.route: (ctx) => GoalsScreen(),
       Motivation.route: (ctx) => Motivation(),
-      VideoScreen.route: (ctx) => VideoScreen(),
-      MotScreen.route: (ctx) => MotScreen(),
-      YogaScreen.route: (ctx) => YogaScreen(),
       ShoppingScreen.route: (ctx) => ShoppingScreen(),
       '/signUp': (BuildContext context) => SignUpView(authFormType: AuthFormType.signUp),
       '/signIn': (BuildContext context) => SignUpView(authFormType: AuthFormType.signIn),

@@ -59,11 +59,28 @@ class NameValidator {
     return null;
   }
 }
+class SurnameValidator {
+  static String validate(String value) {
+    if(value.isEmpty) {
+      return "Surname can't be empty";
+    }
+    if(value.length < 2) {
+      return "Surname must be at least 2 characters long";
+    }
+    if(value.length > 50) {
+      return "Surname must be less than 50 characters long";
+    }
+    return null;
+  }
+}
 
 class EmailValidator {
   static String validate(String value) {
     if(value.isEmpty) {
       return "Email can't be empty";
+    }
+    if(!value.contains("@")) {
+      return "Email is invalid.";
     }
     return null;
   }
@@ -73,6 +90,12 @@ class PasswordValidator {
   static String validate(String value) {
     if(value.isEmpty) {
       return "Password can't be empty";
+    }
+    if(value.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    if(value.length > 50) {
+      return "Password must be less than 50 characters long";
     }
     return null;
   }

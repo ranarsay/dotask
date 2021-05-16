@@ -34,7 +34,6 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
 
   String userID = "";
   String title = "" ;
-  String time;
   bool check= false;
 
 
@@ -49,7 +48,7 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
 
     Map<String, dynamic> goals = { 
       "title" : title,
-      "time" :time,
+
       "check": false,
 
       };
@@ -76,7 +75,7 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
     return SideMenu(
       key: stateMenu,
       background: Colors.blue,
-      type: SideMenuType.slideNRotate,
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +169,7 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
         ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.cyan,
+        backgroundColor: Color.fromRGBO(23, 106, 198, 1),
         onPressed: () {
           showDialog(
             context: context,
@@ -184,24 +183,7 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
               },
               ),
               actions: <Widget>[
-                  DropdownButton<String>(
-                    hint: Text("Choose time interval"),
-                    icon: Icon(Icons.arrow_drop_down),
-                    value: time,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        time = newValue;
-                      });
-                    },
-                    items: <String> ["Today","This week","This month","This year"].map<DropdownMenuItem<String>> ((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                        );
-                    }).toList(),
-
-                  ),
+                  
                    FlatButton(
                   onPressed: () {
                     createGoals();
@@ -280,17 +262,10 @@ class _GoalsScreen1State extends State<GoalsScreen1> {
                                 updateCheck(userGoals.data()["title"]);
 
                         },
-                        icon: Icon(userGoals.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank
+                        icon: Icon(userGoals.data()["check"] == true ? Icons.check_box: Icons.check_box_outline_blank, color: Color.fromRGBO(23, 106, 198, 1)
                         ),
                       ),
-                      subtitle: Row(
-                        key: Key(userGoals.data()["time"]),
-                        children: <Widget>[
-                          Text(userGoals.data()["time"],
-                          textAlign: TextAlign.right,
-                          ),
-                        ],
-                        ),
+                     
                       
                       trailing: IconButton(
                         icon: Icon(

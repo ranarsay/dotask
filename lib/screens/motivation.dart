@@ -18,21 +18,21 @@ List<String> videos = ["Meditation Videos", "Motivation Videos", "Yoga Videos"];
 
 List icons = [
   TextButton(
-      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[200]),),
+      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[300]),),
       onPressed: () {
         const url =
             'https://www.youtube.com/playlist?list=PL5_hf00_pmLzdc_jPOUSXskEeC4V8OTcN';
         _launchURL(url);
       }),
   TextButton(
-      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[200]),),
+      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[300]),),
       onPressed: () {
         const url =
             'https://www.youtube.com/playlist?list=PL5_hf00_pmLxzmUHQF4Fmv8RFGhpuUW8u';
         _launchURL(url);
       }),
   TextButton(
-      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[200]),),
+      child: Text("click here", style: TextStyle(fontSize: 17, color: Colors.lightGreen[300]),),
       onPressed: () {
         const url =
             'https://www.youtube.com/playlist?list=PL5_hf00_pmLwNJX43fadF3MjNNmU12h7Z';
@@ -56,8 +56,8 @@ class _Motivation extends State<Motivation> {
     final GlobalKey<SideMenuState> stateMenu = GlobalKey<SideMenuState>();
     return SideMenu(
       key: stateMenu,
-      background: Colors.cyan,
-      type: SideMenuType.slideNRotate,
+      background: Color.fromRGBO(23, 106, 198, 1),
+      type: SideMenuType.slide,
       menu: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,10 +151,11 @@ class _Motivation extends State<Motivation> {
 
     child: Scaffold(
       appBar: AppBar(
-          title: Text("Get Motivated", style: TextStyle(color: Colors.lightGreen[300]),),
+          title: Text("Get Motivated", style: TextStyle(color:Color.fromRGBO(23, 106, 198, 1))),
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.menu), color: Colors.blue ,
+            icon: Icon(Icons.menu), color: Color.fromRGBO(23, 106, 198, 1),
+            
             onPressed: (){
               final _state = stateMenu.currentState;
               _state.openSideMenu();
@@ -166,10 +167,14 @@ class _Motivation extends State<Motivation> {
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.lightGreen[50], Colors.lightGreen[200]],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.3, 0.7])),
+                                  colors: [
+                                   Colors.greenAccent[100],
+                                    Color.fromRGBO(23, 106, 198, 0.8)
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter
+                                ),
+                ),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,9 +219,9 @@ class _Motivation extends State<Motivation> {
                                         videos[index],
                                         style: TextStyle(
                                           fontFamily: 'Avenir',
-                                          fontSize: 35,
-                                          color: Colors.lightGreen[300],
-                                          fontWeight: FontWeight.w900,
+                                          fontSize: 22,
+                                          color: Colors.lightGreen[600],
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),

@@ -55,7 +55,7 @@ class _ListMoviesStuffState extends State<MoviesScreen> {
   Widget build(BuildContext context){
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: Color.fromRGBO(23, 106, 198, 1),
         onPressed: () {
           showDialog(
             context: context,
@@ -79,13 +79,14 @@ class _ListMoviesStuffState extends State<MoviesScreen> {
                       Navigator.of(context).pop();
                     },
                     child: Text("Add"),
+                    color: Colors.black,
                   ),
                 ],
               );
             },
           );
         }, //onPressed
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
       ),
 
       body: StreamBuilder(
@@ -94,7 +95,10 @@ class _ListMoviesStuffState extends State<MoviesScreen> {
           if(snapshots.hasError) {
             return Text("Something went wrong");
           }
-          else if(snapshots.data == null) return CircularProgressIndicator();
+          else if(snapshots.data == null) return Align(
+                alignment: FractionalOffset.center,
+                child: CircularProgressIndicator(),
+              );
           return ListView.builder(
             shrinkWrap: true,
             itemCount: snapshots.data.docs.length,
